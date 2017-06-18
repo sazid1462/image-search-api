@@ -7,7 +7,9 @@ import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import index from './routes/index';
+import upload from './routes/upload';
 import * as ejs from 'ejs';
+const fileUpload = require('express-fileupload');
 
 const app: express.Express = express();
 
@@ -24,8 +26,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname,'public')));
+// default options
+app.use(fileUpload());
 
 app.use('/',index);
+app.post('/upload',upload);
 
 //catch 404 and forward to error handler
 app.use((req,res,next) => {
